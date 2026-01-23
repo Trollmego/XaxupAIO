@@ -1,0 +1,1610 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ITIL 4 Foundation — Strong Presentation</title>
+    <style>
+      :root {
+        --bg0: #0b1220;
+        --bg1: #0f1a33;
+        --panel: rgba(255, 255, 255, 0.06);
+        --panel2: rgba(255, 255, 255, 0.08);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.72);
+        --faint: rgba(255, 255, 255, 0.55);
+        --accent: #7c5cff;
+        --accent2: #22c55e;
+        --warn: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        --radius: 18px;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+          "Segoe UI Emoji";
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: radial-gradient(1200px 800px at 20% 20%, rgba(124, 92, 255, 0.18), transparent 55%),
+          radial-gradient(900px 650px at 85% 30%, rgba(34, 197, 94, 0.12), transparent 60%),
+          radial-gradient(900px 650px at 50% 95%, rgba(245, 158, 11, 0.09), transparent 60%),
+          linear-gradient(180deg, var(--bg0), var(--bg1));
+        color: var(--text);
+        font-family: var(--sans);
+        overflow: hidden;
+      }
+      a {
+        color: var(--text);
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
+      }
+      a:hover {
+        border-bottom-color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Layout */
+      #app {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+      }
+      #stage {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        justify-items: center;
+        padding: 42px 28px 18px;
+      }
+      #deck {
+        width: min(1180px, 94vw);
+        height: min(660px, 72vh);
+        position: relative;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 46px 54px;
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.035));
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        opacity: 0;
+        transform: translateY(10px) scale(0.995);
+        transition: opacity 260ms ease, transform 260ms ease;
+        overflow: hidden;
+      }
+      .slide.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      .slide .kicker {
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+      h1 {
+        font-size: 54px;
+        margin: 12px 0 12px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 34px;
+        margin: 8px 0 14px;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        font-size: 20px;
+        margin: 16px 0 8px;
+        color: rgba(255, 255, 255, 0.88);
+      }
+      p {
+        margin: 10px 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.45;
+      }
+      ul {
+        margin: 12px 0 0 18px;
+        padding: 0;
+        font-size: 20px;
+        line-height: 1.32;
+      }
+      li {
+        margin: 8px 0;
+        color: rgba(255, 255, 255, 0.86);
+      }
+      li small {
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .faint {
+        color: var(--faint);
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(124, 92, 255, 0.13);
+        border: 1px solid rgba(124, 92, 255, 0.28);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .tag .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 5px rgba(124, 92, 255, 0.12);
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px 18px;
+        align-items: start;
+        margin-top: 14px;
+      }
+      .card {
+        border-radius: 14px;
+        padding: 14px 16px;
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.86);
+      }
+      .accent {
+        color: rgba(255, 255, 255, 0.96);
+      }
+      .accent b {
+        color: #ffffff;
+      }
+      .highlight {
+        padding: 0 6px;
+        border-radius: 8px;
+        background: rgba(124, 92, 255, 0.18);
+        border: 1px solid rgba(124, 92, 255, 0.30);
+      }
+      .callout {
+        border-radius: 16px;
+        padding: 14px 16px;
+        background: rgba(34, 197, 94, 0.10);
+        border: 1px solid rgba(34, 197, 94, 0.26);
+        margin-top: 14px;
+      }
+      .callout.warn {
+        background: rgba(245, 158, 11, 0.10);
+        border-color: rgba(245, 158, 11, 0.28);
+      }
+      .callout.danger {
+        background: rgba(239, 68, 68, 0.10);
+        border-color: rgba(239, 68, 68, 0.26);
+      }
+      .callout p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 17px;
+      }
+      .foot {
+        position: absolute;
+        left: 54px;
+        bottom: 18px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: var(--faint);
+        font-size: 13px;
+      }
+      .foot code {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.16);
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      /* Speaker notes panel */
+      #notes {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        width: 360px;
+        height: calc(100% - 24px);
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.30);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        padding: 14px 14px 12px;
+        overflow: auto;
+        display: none;
+        backdrop-filter: blur(10px);
+      }
+      #notes.visible {
+        display: block;
+      }
+      #notes h4 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.70);
+      }
+      #notes .content {
+        font-size: 14px;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.84);
+      }
+      #notes .content ul {
+        font-size: 14px;
+      }
+      #notes .content p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.84);
+      }
+      #notes .content code {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.22);
+      }
+
+      /* HUD */
+      #hud {
+        width: min(1180px, 94vw);
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 12px;
+        align-items: center;
+        padding: 0 0 18px;
+        color: var(--faint);
+        font-size: 13px;
+      }
+      #hud .left {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      #hud .right {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      #progress {
+        height: 8px;
+        width: 220px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      #progress > div {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, rgba(124, 92, 255, 0.95), rgba(34, 197, 94, 0.95));
+        border-radius: 999px;
+        transition: width 220ms ease;
+      }
+      .kbd {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 3px 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.18);
+        color: rgba(255, 255, 255, 0.78);
+      }
+      #blackout {
+        position: absolute;
+        inset: 0;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease;
+      }
+      #blackout.on {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* Diagrams */
+      .box {
+        border-radius: 14px;
+        padding: 12px 12px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .box strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .box span {
+        display: block;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.76);
+        line-height: 1.25;
+      }
+      .svs {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .svs .row {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .svc {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+      }
+      .svc .step {
+        border-radius: 14px;
+        padding: 12px 10px;
+        background: rgba(124, 92, 255, 0.10);
+        border: 1px solid rgba(124, 92, 255, 0.22);
+        text-align: center;
+      }
+      .svc .step b {
+        display: block;
+        font-size: 14px;
+      }
+      .svc .step small {
+        display: block;
+        margin-top: 6px;
+        color: rgba(255, 255, 255, 0.74);
+        font-size: 12px;
+        line-height: 1.15;
+      }
+      .dims {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .dims .dim {
+        border-radius: 16px;
+        padding: 14px 14px;
+        background: rgba(34, 197, 94, 0.08);
+        border: 1px solid rgba(34, 197, 94, 0.20);
+      }
+      .dims .dim b {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+      .dims .dim small {
+        display: block;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.74);
+        line-height: 1.25;
+      }
+      .ci {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .ci .step {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        gap: 10px;
+        align-items: start;
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.20);
+      }
+      .ci .num {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(245, 158, 11, 0.14);
+        border: 1px solid rgba(245, 158, 11, 0.24);
+        font-weight: 700;
+      }
+      .ci .step b {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .ci .step small {
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      /* Print to PDF */
+      @media print {
+        html,
+        body {
+          overflow: visible;
+          background: #ffffff;
+          color: #111827;
+        }
+        #app {
+          display: block;
+        }
+        #stage {
+          padding: 0;
+          display: block;
+        }
+        #hud,
+        #notes,
+        #blackout {
+          display: none !important;
+        }
+        #deck {
+          width: auto;
+          height: auto;
+        }
+        .slide {
+          position: relative;
+          opacity: 1 !important;
+          transform: none !important;
+          background: #ffffff;
+          color: #111827;
+          box-shadow: none;
+          border: 1px solid #e5e7eb;
+          page-break-after: always;
+          break-after: page;
+        }
+        .slide .kicker,
+        .foot,
+        .muted,
+        .faint,
+        p {
+          color: #374151 !important;
+        }
+        .card,
+        .box,
+        .svc .step,
+        .dims .dim,
+        .ci .step {
+          background: #f9fafb !important;
+          border-color: #e5e7eb !important;
+        }
+        a {
+          color: #111827;
+          border-bottom: 1px solid #9ca3af;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="stage">
+        <div id="deck" aria-live="polite"></div>
+        <div id="notes" aria-hidden="true">
+          <h4>Speaker notes</h4>
+          <div class="content" id="notesContent"></div>
+        </div>
+        <div id="blackout" aria-hidden="true"></div>
+      </div>
+      <div id="hud">
+        <div class="left">
+          <span class="tag"><span class="dot"></span> ITIL 4 Foundation</span>
+          <span class="pill" id="slideTitle">—</span>
+          <span class="pill"><span class="faint">Keys:</span> <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">n</span> <span class="kbd">b</span> <span class="kbd">?</span></span>
+        </div>
+        <div id="progress" aria-label="Progress"><div></div></div>
+        <div class="right">
+          <span class="pill"><span class="faint">Slide</span> <span id="counter">1/1</span></span>
+          <span class="pill"><span class="faint">Go</span> <span class="kbd">g</span></span>
+          <span class="pill"><span class="faint">Outline</span> <span class="kbd">o</span></span>
+        </div>
+      </div>
+    </div>
+
+    <template id="slides">
+      <!-- 01 -->
+      <section class="slide" data-title="Title">
+        <div class="kicker">Strong, exam-aligned, practical</div>
+        <h1>ITIL 4 Foundation</h1>
+        <p class="muted">
+          What ITIL is (and isn’t), how value is created, and how to apply the ITIL 4 model to real service management.
+        </p>
+        <div class="two-col">
+          <div class="card">
+            <h3>Outcomes for this session</h3>
+            <ul>
+              <li>Understand the <span class="highlight">Service Value System (SVS)</span> and <span class="highlight">Service Value Chain (SVC)</span></li>
+              <li>Apply the <span class="highlight">guiding principles</span> and <span class="highlight">four dimensions</span></li>
+              <li>Know the <span class="highlight">key practices</span> most tested at Foundation level</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Presenter</h3>
+            <p class="muted">Name • Role • Org</p>
+            <p class="muted">Date • Audience</p>
+            <div class="callout">
+              <p><b>Tip:</b> Use the “value” vocabulary consistently: outcomes, costs, risks.</p>
+            </div>
+          </div>
+        </div>
+        <div class="foot">
+          <span>Print to PDF from the browser</span>
+          <code>Ctrl/Cmd + P</code>
+          <span>Toggle notes</span>
+          <code>n</code>
+        </div>
+        <aside class="notes">
+          <p>Set expectations: ITIL 4 is a flexible operating model, not a rigid process library. Emphasize “co-create value” and how practices support value streams.</p>
+        </aside>
+      </section>
+
+      <!-- 02 -->
+      <section class="slide" data-title="Agenda">
+        <div class="kicker">Where we’re going</div>
+        <h2>Agenda</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Core concepts</h3>
+            <ul>
+              <li>Service, utility &amp; warranty</li>
+              <li>Value: outcomes, costs, risks</li>
+              <li>SVS and SVC</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Operating model</h3>
+            <ul>
+              <li>Guiding principles (7)</li>
+              <li>Four dimensions</li>
+              <li>Continual improvement</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Practices</h3>
+            <ul>
+              <li>How practices support value streams</li>
+              <li>Foundation “must-know” practices</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Exam readiness</h3>
+            <ul>
+              <li>Common traps &amp; misconceptions</li>
+              <li>How to answer scenario questions</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Keep time: ~35–45 minutes content + Q&amp;A. If short on time, compress the practice deep-dives and keep SVS/SVC + principles strong.</p>
+        </aside>
+      </section>
+
+      <!-- 03 -->
+      <section class="slide" data-title="Why ITIL 4">
+        <div class="kicker">Business lens</div>
+        <h2>Why ITIL 4 exists</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Problems ITIL addresses</h3>
+            <ul>
+              <li>IT seen as a cost center instead of a value creator</li>
+              <li>Fragmented teams, handoffs, “ticket ping‑pong”</li>
+              <li>Change vs stability conflict (speed, risk, compliance)</li>
+              <li>Work optimized locally, not end‑to‑end</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What ITIL 4 provides</h3>
+            <ul>
+              <li><b>Common language</b> for services and value</li>
+              <li><b>Operating model</b> for co‑creating value</li>
+              <li><b>Practices</b> that can be tailored</li>
+              <li><b>Integration</b> with Agile, Lean, DevOps</li>
+            </ul>
+            <div class="callout">
+              <p><b>ITIL 4 ≠ waterfall.</b> It supports iterative delivery and continuous improvement.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Anchor this in the audience’s pain points: outages, long lead times, unclear ownership, poor customer experience, audit stress.</p>
+        </aside>
+      </section>
+
+      <!-- 04 -->
+      <section class="slide" data-title="Key definitions">
+        <div class="kicker">Vocabulary that appears in questions</div>
+        <h2>Key definitions (foundation level)</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Service</h3>
+            <p class="muted">A means of enabling value co‑creation by facilitating outcomes customers want, without owning specific costs and risks.</p>
+            <h3>Value</h3>
+            <p class="muted">The perceived benefits, usefulness, and importance of something.</p>
+          </div>
+          <div class="card">
+            <h3>Outcomes / Costs / Risks</h3>
+            <ul>
+              <li><b>Outcomes</b>: results enabled by the service</li>
+              <li><b>Costs</b>: what the consumer/provider spends</li>
+              <li><b>Risks</b>: uncertainty that could impact objectives</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam trap:</b> value is not just “features” or “availability”. It’s about outcomes in context.</p>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: 12px">
+          <div class="box">
+            <strong>Utility</strong>
+            <span>Fit for purpose (what the service does)</span>
+          </div>
+          <div class="box">
+            <strong>Warranty</strong>
+            <span>Fit for use (how it performs: availability, capacity, continuity, security)</span>
+          </div>
+          <div class="box">
+            <strong>Customer / User / Sponsor</strong>
+            <span>Receives value / uses service / authorizes budget</span>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Reinforce: customers want outcomes; users use the service; sponsors fund it. Utility vs warranty are classic questions.</p>
+        </aside>
+      </section>
+
+      <!-- 05 -->
+      <section class="slide" data-title="SVS overview">
+        <div class="kicker">The big picture</div>
+        <h2>The Service Value System (SVS)</h2>
+        <p class="muted">SVS shows how all components and activities work together to enable value creation through services.</p>
+        <div class="svs">
+          <div class="row">
+            <div class="box">
+              <strong>Opportunity / Demand</strong>
+              <span>Triggers work: needs, issues, market changes</span>
+            </div>
+            <div class="box">
+              <strong>ITIL SVS</strong>
+              <span>Guiding principles • Governance • SVC • Practices • Continual improvement</span>
+            </div>
+            <div class="box">
+              <strong>Value</strong>
+              <span>Co-created with consumers, stakeholders</span>
+            </div>
+          </div>
+          <div class="grid-4">
+            <div class="box"><strong>Guiding principles</strong><span>Recommendations that guide decisions</span></div>
+            <div class="box"><strong>Governance</strong><span>Direction &amp; oversight; ensure policies and accountability</span></div>
+            <div class="box"><strong>Service value chain</strong><span>Operating model: activities to create value</span></div>
+            <div class="box"><strong>Practices</strong><span>Resources for performing work (34 practices)</span></div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Explain SVS as “how the organization works as a system.” Emphasize that practices support value chain activities, and guiding principles inform everything.</p>
+        </aside>
+      </section>
+
+      <!-- 06 -->
+      <section class="slide" data-title="Guiding principles">
+        <div class="kicker">7 principles</div>
+        <h2>ITIL 4 guiding principles</h2>
+        <div class="grid-2">
+          <div class="card">
+            <ul>
+              <li><b>Focus on value</b> <small>— for customers and the organization</small></li>
+              <li><b>Start where you are</b> <small>— assess current state, don’t reinvent</small></li>
+              <li><b>Progress iteratively with feedback</b> <small>— learn fast, reduce risk</small></li>
+              <li><b>Collaborate and promote visibility</b> <small>— shared understanding</small></li>
+            </ul>
+          </div>
+          <div class="card">
+            <ul>
+              <li><b>Think and work holistically</b> <small>— optimize end‑to‑end, not silos</small></li>
+              <li><b>Keep it simple and practical</b> <small>— minimum viable processes</small></li>
+              <li><b>Optimize and automate</b> <small>— after optimizing; automate wisely</small></li>
+            </ul>
+            <div class="callout">
+              <p><b>Use as a checklist:</b> “Are we creating value? Is there visibility? Can we iterate?”</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Give a 10-second example for each principle if presenting live. In questions, principles are used to select the “best next step”.</p>
+        </aside>
+      </section>
+
+      <!-- 07 -->
+      <section class="slide" data-title="Governance">
+        <div class="kicker">Direction &amp; control</div>
+        <h2>Governance in ITIL 4</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <ul>
+              <li>Evaluate: understand the current state and external factors</li>
+              <li>Direct: set strategy, policies, priorities</li>
+              <li>Monitor: ensure performance, compliance, and outcomes</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Common confusion:</b> governance is not “a CAB meeting”. It’s overarching oversight.</p>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Good governance enables</h3>
+            <ul>
+              <li>Clear decision rights and accountability</li>
+              <li>Balanced value vs risk decisions</li>
+              <li>Transparency for stakeholders</li>
+              <li>Alignment between strategy and operations</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Governance can be at corporate, organizational, or service level. Tie back to risk, compliance, and prioritization.</p>
+        </aside>
+      </section>
+
+      <!-- 08 -->
+      <section class="slide" data-title="Service value chain">
+        <div class="kicker">Operating model</div>
+        <h2>The Service Value Chain (SVC)</h2>
+        <p class="muted">A flexible model for creating, delivering, and improving services.</p>
+        <div class="svc">
+          <div class="step">
+            <b>Plan</b>
+            <small>Shared understanding of vision, status, direction</small>
+          </div>
+          <div class="step">
+            <b>Improve</b>
+            <small>Continual improvement for products, services, practices</small>
+          </div>
+          <div class="step">
+            <b>Engage</b>
+            <small>Needs, transparency, relationships with stakeholders</small>
+          </div>
+          <div class="step">
+            <b>Design &amp; Transition</b>
+            <small>Ensure quality, cost, time-to-market</small>
+          </div>
+          <div class="step">
+            <b>Obtain / Build</b>
+            <small>Acquire components; build service components</small>
+          </div>
+          <div class="step">
+            <b>Deliver &amp; Support</b>
+            <small>Operational delivery, support, resilience</small>
+          </div>
+        </div>
+        <div class="callout">
+          <p><b>Key idea:</b> different value streams use different combinations of these activities.</p>
+        </div>
+        <aside class="notes">
+          <p>Many Foundation questions ask which activity is responsible for a scenario. Emphasize that SVC is not a linear lifecycle.</p>
+        </aside>
+      </section>
+
+      <!-- 09 -->
+      <section class="slide" data-title="Value streams">
+        <div class="kicker">End-to-end flow</div>
+        <h2>Value stream example: Restore service</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Scenario</h3>
+            <p class="muted">An outage impacts a customer-facing service. The goal is rapid restoration and learning to prevent recurrence.</p>
+            <h3>Value stream (possible path)</h3>
+            <ul>
+              <li><b>Engage</b>: receive incident, manage expectations</li>
+              <li><b>Deliver &amp; Support</b>: triage, restore service</li>
+              <li><b>Obtain/Build</b>: create or apply fix</li>
+              <li><b>Design &amp; Transition</b>: validate, deploy safely</li>
+              <li><b>Improve</b>: post-incident review, trend analysis</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What “good” looks like</h3>
+            <ul>
+              <li>Clear priority &amp; escalation</li>
+              <li>Swarming / collaboration, not handoffs</li>
+              <li>Known error and knowledge use</li>
+              <li>Automated monitoring and rollback where appropriate</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam hint:</b> Choose the answer that improves end‑to‑end value, not local efficiency.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Use this to tie practices to the value chain: incident mgmt, problem mgmt, change enablement, monitoring, knowledge mgmt, etc.</p>
+        </aside>
+      </section>
+
+      <!-- 10 -->
+      <section class="slide" data-title="Four dimensions">
+        <div class="kicker">Balance and context</div>
+        <h2>The four dimensions of service management</h2>
+        <p class="muted">A holistic view ensures changes don’t optimize one area while harming another.</p>
+        <div class="dims">
+          <div class="dim">
+            <b>Organizations &amp; people</b>
+            <small>Roles, skills, culture, structure, capacity</small>
+          </div>
+          <div class="dim">
+            <b>Information &amp; technology</b>
+            <small>Data, tools, architectures, automation, knowledge</small>
+          </div>
+          <div class="dim">
+            <b>Partners &amp; suppliers</b>
+            <small>Sourcing models, contracts, integration, vendor risk</small>
+          </div>
+          <div class="dim">
+            <b>Value streams &amp; processes</b>
+            <small>Workflows, controls, handoffs, measurement, improvement</small>
+          </div>
+        </div>
+        <div class="callout">
+          <p><b>Practical use:</b> Before changing a service, ask “What changes across all four dimensions?”</p>
+        </div>
+        <aside class="notes">
+          <p>Common question pattern: a change fails because one dimension was ignored (e.g., tool deployed without training or vendor integration).</p>
+        </aside>
+      </section>
+
+      <!-- 11 -->
+      <section class="slide" data-title="Continual improvement">
+        <div class="kicker">Always improving</div>
+        <h2>Continual improvement model (7 steps)</h2>
+        <div class="ci">
+          <div class="step"><div class="num">1</div><div><b>What is the vision?</b><small>Link to strategy, goals, desired outcomes.</small></div></div>
+          <div class="step"><div class="num">2</div><div><b>Where are we now?</b><small>Baseline metrics, feedback, assessment.</small></div></div>
+          <div class="step"><div class="num">3</div><div><b>Where do we want to be?</b><small>Targets, objectives, success criteria.</small></div></div>
+          <div class="step"><div class="num">4</div><div><b>How do we get there?</b><small>Improvement plan: experiments, initiatives.</small></div></div>
+          <div class="step"><div class="num">5</div><div><b>Take action</b><small>Execute iteratively; manage change.</small></div></div>
+          <div class="step"><div class="num">6</div><div><b>Did we get there?</b><small>Measure; verify outcomes and value.</small></div></div>
+          <div class="step"><div class="num">7</div><div><b>How do we keep the momentum going?</b><small>Embed learning; update backlog; celebrate wins.</small></div></div>
+        </div>
+        <aside class="notes">
+          <p>In exam questions, choose answers that reflect measurement + feedback loops. Continual improvement is not a “phase”—it is ongoing.</p>
+        </aside>
+      </section>
+
+      <!-- 12 -->
+      <section class="slide" data-title="Practices">
+        <div class="kicker">From “processes” to “practices”</div>
+        <h2>ITIL 4 practices (34)</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Practice definition</h3>
+            <p class="muted">
+              A set of organizational resources designed for performing work or accomplishing an objective.
+            </p>
+            <h3>Practice groups</h3>
+            <ul>
+              <li><b>General management</b> (14)</li>
+              <li><b>Service management</b> (17)</li>
+              <li><b>Technical management</b> (3)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>How to think about practices</h3>
+            <ul>
+              <li>They enable value streams (not “the lifecycle”)</li>
+              <li>They can be tailored and combined</li>
+              <li>They include people, process, partners, and tech</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam hint:</b> Practices support value chain activities; they don’t replace them.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>You don’t need to memorize all 34 for Foundation, but you must know several key ones and their purpose.</p>
+        </aside>
+      </section>
+
+      <!-- 13 -->
+      <section class="slide" data-title="Must-know practices">
+        <div class="kicker">Foundation focus</div>
+        <h2>Practices most often tested</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Service management practices</h3>
+            <ul>
+              <li><b>Incident management</b></li>
+              <li><b>Problem management</b></li>
+              <li><b>Change enablement</b></li>
+              <li><b>Service request management</b></li>
+              <li><b>Service desk</b></li>
+              <li><b>Service level management</b></li>
+              <li><b>Monitoring and event management</b></li>
+              <li><b>Release management</b> / <b>Deployment management</b></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>General management practices (commonly referenced)</h3>
+            <ul>
+              <li><b>Continual improvement</b></li>
+              <li><b>Information security management</b></li>
+              <li><b>Risk management</b></li>
+              <li><b>Portfolio management</b></li>
+              <li><b>Relationship management</b></li>
+              <li><b>Knowledge management</b></li>
+            </ul>
+            <div class="callout">
+              <p><b>Strategy:</b> Learn the purpose of each, plus 1–2 key terms (e.g., “known error”).</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Next slides do quick “purpose + key concepts + common confusion”. Keep this brisk and scenario-driven.</p>
+        </aside>
+      </section>
+
+      <!-- 14 -->
+      <section class="slide" data-title="Incident management">
+        <div class="kicker">Restore fast</div>
+        <h2>Incident management</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Minimize the negative impact of incidents by restoring normal service operation as quickly as possible.</p>
+            <h3>Key points</h3>
+            <ul>
+              <li>Prioritize by <b>impact</b> and <b>urgency</b></li>
+              <li>Workarounds are acceptable if they restore service</li>
+              <li>Use knowledge and known errors to speed resolution</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Common confusions</h3>
+            <ul>
+              <li><b>Incident ≠ problem</b> <small>(incident = interruption; problem = underlying cause)</small></li>
+              <li>Incident management doesn’t “own” long-term root cause removal</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam hint:</b> “Restore service quickly” is incident; “prevent recurrence” points to problem management.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Use an example: “email down” incident restored via failover; root cause investigated separately as a problem.</p>
+        </aside>
+      </section>
+
+      <!-- 15 -->
+      <section class="slide" data-title="Problem management">
+        <div class="kicker">Prevent recurrence</div>
+        <h2>Problem management</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Reduce the likelihood and impact of incidents by identifying actual and potential causes, and managing workarounds and known errors.</p>
+            <h3>Key terms</h3>
+            <ul>
+              <li><b>Problem</b>: cause (or potential cause) of incidents</li>
+              <li><b>Known error</b>: problem with a documented root cause and workaround</li>
+              <li><b>Workaround</b>: solution that reduces impact without full resolution</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Good practices</h3>
+            <ul>
+              <li>Trend analysis: repeated incidents → problem candidate</li>
+              <li>Collaboration (“swarming”) for complex issues</li>
+              <li>Record and share known errors via knowledge management</li>
+            </ul>
+            <div class="callout">
+              <p><b>Practical:</b> focus on the problems that reduce the most business risk/cost, not just the loudest.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Foundation expects you to know known error and workaround distinctions clearly.</p>
+        </aside>
+      </section>
+
+      <!-- 16 -->
+      <section class="slide" data-title="Change enablement">
+        <div class="kicker">Balance speed &amp; risk</div>
+        <h2>Change enablement</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Maximize the number of successful service and product changes by ensuring risks are properly assessed, authorizing changes to proceed, and managing the change schedule.</p>
+            <h3>Change types</h3>
+            <ul>
+              <li><b>Standard</b>: low-risk, pre-approved, repeatable</li>
+              <li><b>Normal</b>: assessed and authorized case-by-case</li>
+              <li><b>Emergency</b>: expedite to restore service / address critical risk</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What ITIL 4 emphasizes</h3>
+            <ul>
+              <li>Make flow faster for low-risk changes (standard changes)</li>
+              <li>Use change models and automation where appropriate</li>
+              <li>Focus on outcomes and learning from failed changes</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam trap:</b> CAB is not mandatory for every change; governance should be proportionate to risk.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Use a quick example: password policy update (normal) vs routine certificate renewal with automation (standard) vs emergency patch during active exploit (emergency).</p>
+        </aside>
+      </section>
+
+      <!-- 17 -->
+      <section class="slide" data-title="Service request management">
+        <div class="kicker">Fulfill requests</div>
+        <h2>Service request management &amp; Service desk</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Service request management</h3>
+            <p class="muted">Supports agreed user requests like access, information, and standard services.</p>
+            <ul>
+              <li>Standardization and automation improve speed</li>
+              <li>Clear request models reduce rework</li>
+              <li>Request portals + knowledge reduce contact volume</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Service desk</h3>
+            <p class="muted">Single point of contact for users (incidents, requests, communications).</p>
+            <ul>
+              <li>Provide support, coordinate resolution, manage comms</li>
+              <li>Capture feedback and user experience insights</li>
+              <li>Can be centralized, distributed, virtual, or follow‑the‑sun</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <p><b>Remember:</b> service requests are planned/standard; incidents are unplanned interruptions.</p>
+        </div>
+        <aside class="notes">
+          <p>Questions often contrast incident vs service request. Emphasize that the service desk isn’t the same as incident management; it’s a function/practice capability.</p>
+        </aside>
+      </section>
+
+      <!-- 18 -->
+      <section class="slide" data-title="Service level management">
+        <div class="kicker">Set expectations</div>
+        <h2>Service level management</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Set clear business-based targets for service performance and ensure delivery is properly assessed, monitored, and managed.</p>
+            <h3>Key artifacts</h3>
+            <ul>
+              <li>Service level agreements (SLAs)</li>
+              <li>Service level objectives (SLOs)</li>
+              <li>Service catalog + reporting</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Good behavior</h3>
+            <ul>
+              <li>Co-create meaningful metrics with customers</li>
+              <li>Use reporting for improvement, not punishment</li>
+              <li>Align targets to value and risk</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam hint:</b> SLM is about agreed targets + monitoring + continual improvement—not just “writing SLAs”.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>If asked “what should be done first?”, “engage” and “focus on value” typically means understand needs before defining targets.</p>
+        </aside>
+      </section>
+
+      <!-- 19 -->
+      <section class="slide" data-title="Monitoring & event management">
+        <div class="kicker">See issues early</div>
+        <h2>Monitoring and event management</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Systematically observe services and service components, and record and report changes of state identified as events.</p>
+            <h3>Key points</h3>
+            <ul>
+              <li>Monitoring provides data; event management interprets events</li>
+              <li>Events can be informational, warning, or exception</li>
+              <li>Automation improves speed and reliability</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Value</h3>
+            <ul>
+              <li>Detect issues before customers report them</li>
+              <li>Enable proactive and predictive actions</li>
+              <li>Support incident management and SLM reporting</li>
+            </ul>
+            <div class="callout">
+              <p><b>Practical:</b> reduce alert noise; focus on signals tied to outcomes.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Good monitoring is aligned to critical user journeys and SLAs. Over-alerting increases risk.</p>
+        </aside>
+      </section>
+
+      <!-- 20 -->
+      <section class="slide" data-title="Release vs deployment">
+        <div class="kicker">Often confused</div>
+        <h2>Release management vs Deployment management</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Release management</h3>
+            <p class="muted">Make new/changed services available for use. Manage releases so they deliver value and meet expectations.</p>
+            <ul>
+              <li>Release policy and planning</li>
+              <li>Packaging, documentation, communications</li>
+              <li>May bundle multiple changes</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Deployment management</h3>
+            <p class="muted">Move new/changed components to live environments. Focus on technical movement and integrity.</p>
+            <ul>
+              <li>Deploy to test/stage/prod</li>
+              <li>Automation (CI/CD) where suitable</li>
+              <li>Rollback and verification</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout warn">
+          <p><b>Memory aid:</b> “Release” = availability for use; “Deployment” = moving bits into environments.</p>
+        </div>
+        <aside class="notes">
+          <p>Foundation likes this distinction. In modern DevOps, these can be closely integrated, but conceptually they differ.</p>
+        </aside>
+      </section>
+
+      <!-- 21 -->
+      <section class="slide" data-title="Knowledge management">
+        <div class="kicker">Reduce rework</div>
+        <h2>Knowledge management</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Purpose</h3>
+            <p class="muted">Maintain and improve effective, convenient, and secure use of information and knowledge across the organization.</p>
+            <h3>Examples</h3>
+            <ul>
+              <li>Knowledge articles and runbooks</li>
+              <li>Known error database links</li>
+              <li>Self-service and shift-left support</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Quality matters</h3>
+            <ul>
+              <li>Ownership and lifecycle for articles</li>
+              <li>Feedback loops from incidents/requests</li>
+              <li>Right access controls (security + usability)</li>
+            </ul>
+            <div class="callout">
+              <p><b>Exam hint:</b> Knowledge management supports many practices (incident, request, problem, change).</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Call out the “progress iteratively with feedback” principle: knowledge improves through use and reviews.</p>
+        </aside>
+      </section>
+
+      <!-- 22 -->
+      <section class="slide" data-title="Metrics and measurement">
+        <div class="kicker">Prove value</div>
+        <h2>Metrics that support value</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Measure what matters</h3>
+            <ul>
+              <li><b>Outcomes</b>: customer experience, business results</li>
+              <li><b>Outputs</b>: volume, throughput, deliverables</li>
+              <li><b>Flow</b>: lead time, WIP, bottlenecks</li>
+              <li><b>Reliability</b>: availability, MTTR, change failure rate</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Good measurement behaviors</h3>
+            <ul>
+              <li>Start where you are (baseline first)</li>
+              <li>Use metrics for improvement, not blame</li>
+              <li>Balance speed and risk (e.g., DORA + stability metrics)</li>
+            </ul>
+            <div class="callout warn">
+              <p><b>Exam hint:</b> measurement should support decision-making and improvement, aligned to value.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>If you want one practical model: tie metrics to a value stream. Ask “which step is slowest or most error-prone?”</p>
+        </aside>
+      </section>
+
+      <!-- 23 -->
+      <section class="slide" data-title="ITIL + Agile/DevOps/Lean">
+        <div class="kicker">Not competing—complementary</div>
+        <h2>How ITIL 4 fits with modern ways of working</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Agile</h3>
+            <ul>
+              <li>Iterative delivery</li>
+              <li>Feedback loops</li>
+              <li>Customer collaboration</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Lean</h3>
+            <ul>
+              <li>Optimize flow</li>
+              <li>Eliminate waste</li>
+              <li>Work holistically</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>DevOps</h3>
+            <ul>
+              <li>Automation</li>
+              <li>Shared ownership</li>
+              <li>Continuous delivery &amp; reliability</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <p><b>ITIL 4</b> provides common language and practices; <b>Agile/Lean/DevOps</b> provide methods and culture to execute.</p>
+        </div>
+        <aside class="notes">
+          <p>Bring it back to guiding principles: collaborate, visibility, iterate, optimize &amp; automate. This slide helps counter “ITIL is slow” objections.</p>
+        </aside>
+      </section>
+
+      <!-- 24 -->
+      <section class="slide" data-title="Common pitfalls">
+        <div class="kicker">What to avoid</div>
+        <h2>Common pitfalls (real life + exam)</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Real-world pitfalls</h3>
+            <ul>
+              <li>Over-engineering processes (complexity without value)</li>
+              <li>Optimizing a team, not the value stream</li>
+              <li>Metrics that drive bad behavior (“gaming the SLA”)</li>
+              <li>Automating a broken process</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Exam pitfalls</h3>
+            <ul>
+              <li>Mixing up incident vs request vs problem</li>
+              <li>Thinking CAB is required for every change</li>
+              <li>Forgetting “co-create value” (customer context)</li>
+              <li>Ignoring the four dimensions</li>
+            </ul>
+            <div class="callout danger">
+              <p><b>Heuristic:</b> choose answers that align to guiding principles and end-to-end value.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>When unsure, map each option to guiding principles. The best option usually improves feedback, visibility, and value, with proportionate controls.</p>
+        </aside>
+      </section>
+
+      <!-- 25 -->
+      <section class="slide" data-title="Exam readiness">
+        <div class="kicker">How to score well</div>
+        <h2>Foundation exam approach</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>How to answer scenario questions</h3>
+            <ul>
+              <li>Identify what the scenario is optimizing: <b>value</b>, <b>risk</b>, <b>flow</b></li>
+              <li>Pick the action that improves the system, not a silo</li>
+              <li>Prefer incremental improvement with feedback</li>
+              <li>Use “proportionate” controls (especially for change)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>High-yield memory anchors</h3>
+            <ul>
+              <li>SVS components: <b>GP + Governance + SVC + Practices + CI</b></li>
+              <li>SVC activities: <b>P I E D O D</b> (Plan, Improve, Engage, Design &amp; Transition, Obtain/Build, Deliver &amp; Support)</li>
+              <li>4 Dimensions: <b>People, Tech, Partners, Value streams</b></li>
+            </ul>
+            <div class="callout">
+              <p><b>Last tip:</b> read the question for “purpose” vs “activity” vs “practice”.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>If the audience is actively studying, add 1–2 sample questions as an exercise. Otherwise, keep it as guidance.</p>
+        </aside>
+      </section>
+
+      <!-- 26 -->
+      <section class="slide" data-title="Summary">
+        <div class="kicker">Key takeaways</div>
+        <h2>Summary</h2>
+        <div class="card">
+          <ul>
+            <li><b>ITIL 4 is a system</b>: SVS connects principles, governance, value chain, practices, improvement.</li>
+            <li><b>Value is co-created</b>: focus on outcomes, costs, and risks.</li>
+            <li><b>Work end-to-end</b>: value streams combine SVC activities + practices.</li>
+            <li><b>Think holistically</b>: four dimensions prevent “fixes” that create new problems.</li>
+            <li><b>Improve continuously</b>: measure, learn, iterate.</li>
+          </ul>
+        </div>
+        <div class="callout">
+          <p><b>Q&amp;A</b> — What’s one service/value stream we can improve next week?</p>
+        </div>
+        <aside class="notes">
+          <p>Close with an action: pick one value stream and apply four dimensions + improvement model. If time, ask audience to name a pain point to map to SVC activities/practices.</p>
+        </aside>
+      </section>
+
+      <!-- 27 -->
+      <section class="slide" data-title="Outline / Help">
+        <div class="kicker">Controls</div>
+        <h2>Controls &amp; features</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Navigation</h3>
+            <ul>
+              <li><span class="kbd">→</span> / <span class="kbd">Space</span> next</li>
+              <li><span class="kbd">←</span> previous</li>
+              <li><span class="kbd">g</span> go to slide number</li>
+              <li><span class="kbd">o</span> open outline</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Presenter tools</h3>
+            <ul>
+              <li><span class="kbd">n</span> toggle speaker notes</li>
+              <li><span class="kbd">b</span> blackout screen</li>
+              <li><span class="kbd">?</span> jump to this help slide</li>
+              <li>Print to PDF: <span class="kbd">Ctrl/Cmd + P</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout warn">
+          <p><b>Outline view:</b> press <span class="kbd">o</span> then click a slide title.</p>
+        </div>
+        <aside class="notes">
+          <p>Explain this once, then keep hidden. You can also share the deck as a single file.</p>
+        </aside>
+      </section>
+    </template>
+
+    <template id="outlineTpl">
+      <section class="slide" data-title="Outline">
+        <div class="kicker">Jump to any slide</div>
+        <h2>Outline</h2>
+        <div class="card" id="outlineList"></div>
+        <div class="foot">
+          <span>Close outline</span>
+          <code>o</code>
+        </div>
+        <aside class="notes">
+          <p>Outline is generated automatically. Click a title to jump.</p>
+        </aside>
+      </section>
+    </template>
+
+    <script>
+      (function () {
+        /** @type {HTMLElement} */
+        const deck = document.getElementById("deck");
+        const slidesTpl = document.getElementById("slides");
+        const outlineTpl = document.getElementById("outlineTpl");
+        const notesPanel = document.getElementById("notes");
+        const notesContent = document.getElementById("notesContent");
+        const blackout = document.getElementById("blackout");
+        const counter = document.getElementById("counter");
+        const progress = document.querySelector("#progress > div");
+        const slideTitle = document.getElementById("slideTitle");
+
+        const baseSlides = Array.from(slidesTpl.content.querySelectorAll(".slide"));
+        const helpIndex = baseSlides.findIndex((s) => (s.dataset.title || "").toLowerCase().includes("help"));
+
+        const outlineSlide = outlineTpl.content.querySelector(".slide").cloneNode(true);
+        const slides = [...baseSlides.map((s) => s.cloneNode(true)), outlineSlide];
+        const outlineIndex = slides.length - 1;
+
+        slides.forEach((s) => deck.appendChild(s));
+
+        function getSlideIndexFromHash() {
+          const m = (location.hash || "").match(/slide-(\d+)/i);
+          if (!m) return 0;
+          const idx = Math.max(0, Math.min(slides.length - 1, parseInt(m[1], 10) - 1));
+          return Number.isFinite(idx) ? idx : 0;
+        }
+
+        let idx = getSlideIndexFromHash();
+        let notesVisible = false;
+        let blackoutOn = false;
+
+        function setHash(i) {
+          history.replaceState(null, "", `#slide-${i + 1}`);
+        }
+
+        function renderOutline() {
+          const container = outlineSlide.querySelector("#outlineList");
+          if (!container || container.dataset.ready === "1") return;
+          container.dataset.ready = "1";
+          const list = document.createElement("div");
+          list.className = "grid-2";
+          slides.forEach((s, i) => {
+            if (i === outlineIndex) return;
+            const title = s.dataset.title || `Slide ${i + 1}`;
+            const item = document.createElement("div");
+            item.className = "box";
+            item.style.cursor = "pointer";
+            item.innerHTML = `<strong>${String(i + 1).padStart(2, "0")}. ${title}</strong><span>Click to jump</span>`;
+            item.addEventListener("click", () => go(i));
+            list.appendChild(item);
+          });
+          container.appendChild(list);
+        }
+
+        function getNotesForSlide(slideEl) {
+          const notes = slideEl.querySelector("aside.notes");
+          return notes ? notes.innerHTML.trim() : "";
+        }
+
+        function setNotes(i) {
+          const html = getNotesForSlide(slides[i]);
+          notesContent.innerHTML =
+            html || `<p class="muted">No speaker notes for this slide.</p>`;
+        }
+
+        function updateHud(i) {
+          const total = slides.length - 1; // exclude outline slide from total count
+          const displayIdx = Math.min(i, total - 1);
+          counter.textContent = `${displayIdx + 1}/${total}`;
+          const title = slides[displayIdx]?.dataset.title || `Slide ${displayIdx + 1}`;
+          slideTitle.textContent = title;
+          const pct = total <= 1 ? 100 : ((displayIdx + 1) / total) * 100;
+          progress.style.width = `${pct}%`;
+        }
+
+        function go(i) {
+          idx = Math.max(0, Math.min(slides.length - 1, i));
+          slides.forEach((s, n) => s.classList.toggle("active", n === idx));
+          if (idx === outlineIndex) renderOutline();
+          setHash(idx);
+          setNotes(Math.min(idx, slides.length - 2));
+          updateHud(idx);
+        }
+
+        function next() {
+          if (idx === outlineIndex) return go(0);
+          if (idx >= slides.length - 2) return go(helpIndex >= 0 ? helpIndex : 0);
+          go(idx + 1);
+        }
+        function prev() {
+          if (idx === outlineIndex) return go(0);
+          go(idx - 1);
+        }
+        function toggleNotes() {
+          notesVisible = !notesVisible;
+          notesPanel.classList.toggle("visible", notesVisible);
+          notesPanel.setAttribute("aria-hidden", String(!notesVisible));
+        }
+        function toggleBlackout() {
+          blackoutOn = !blackoutOn;
+          blackout.classList.toggle("on", blackoutOn);
+          blackout.setAttribute("aria-hidden", String(!blackoutOn));
+        }
+        function openOutline() {
+          go(outlineIndex);
+        }
+        function goToHelp() {
+          if (helpIndex >= 0) go(helpIndex);
+        }
+        function promptGoToSlide() {
+          const total = slides.length - 1;
+          const v = prompt(`Go to slide (1-${total}):`);
+          if (!v) return;
+          const n = parseInt(v, 10);
+          if (Number.isFinite(n) && n >= 1 && n <= total) go(n - 1);
+        }
+
+        window.addEventListener("hashchange", () => {
+          const i = getSlideIndexFromHash();
+          if (i !== idx) go(i);
+        });
+        window.addEventListener("keydown", (e) => {
+          const key = e.key.toLowerCase();
+          const isEditable =
+            e.target instanceof HTMLElement &&
+            (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable);
+          if (isEditable) return;
+
+          if (key === "arrowright" || key === " ") {
+            e.preventDefault();
+            next();
+            return;
+          }
+          if (key === "arrowleft") {
+            e.preventDefault();
+            prev();
+            return;
+          }
+          if (key === "n") {
+            e.preventDefault();
+            toggleNotes();
+            return;
+          }
+          if (key === "b") {
+            e.preventDefault();
+            toggleBlackout();
+            return;
+          }
+          if (key === "o") {
+            e.preventDefault();
+            openOutline();
+            return;
+          }
+          if (key === "?") {
+            e.preventDefault();
+            goToHelp();
+            return;
+          }
+          if (key === "g") {
+            e.preventDefault();
+            promptGoToSlide();
+            return;
+          }
+        });
+
+        go(idx);
+      })();
+    </script>
+  </body>
+</html>
