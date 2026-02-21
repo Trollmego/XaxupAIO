@@ -5,12 +5,14 @@ An intelligent Snake game that plays itself using the **A* pathfinding algorithm
 ## Features
 
 ✨ **Smart AI Autopilot** - Uses A* pathfinding algorithm for intelligent navigation  
-🎮 **Automatic Gameplay** - No manual controls needed, just watch the AI play  
+🤖 **Dual Play Modes** - Switch between AI autopilot and manual play (Arrow keys or WASD)  
+🎮 **Automatic Gameplay** - No manual controls needed when AI is active, just watch it play  
 📊 **Real-time Statistics** - Track score, high score, and snake length  
 🎨 **Modern UI Design** - Beautiful gradient backgrounds and smooth animations  
 🔄 **Game Controls** - Start, pause, and reset functionality  
 💾 **High Score Persistence** - Saves your best score in browser localStorage  
 🌙 **Visual Effects** - Glowing effects on snake and food with smooth rendering  
+🧠 **Follow-Tail Survival** - AI uses follow-tail strategy when no path to food exists  
 
 ## How It Works
 
@@ -64,9 +66,11 @@ php -S localhost:8000
 
 ## Game Controls
 
-- **Start Game** - Begin the AI autopilot
+- **AI Play / Manual Play** - Toggle between AI autopilot and manual control (select before starting)
+- **Start Game** - Begin the game
 - **Pause** - Pause/resume the game
 - **Reset** - Reset the game to initial state
+- **Manual Mode** - Use Arrow Keys or WASD to control the snake direction
 
 ## Technical Details
 

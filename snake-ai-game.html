@@ -173,6 +173,34 @@
             50% { opacity: 0.5; transform: scale(1.2); }
         }
 
+        .mode-toggle {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-mode {
+            padding: 10px 24px;
+            font-size: 0.95em;
+            border: 2px solid #667eea;
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        .btn-mode.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .manual-hint {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 8px;
+        }
+
         .legend {
             display: flex;
             gap: 20px;
@@ -226,9 +254,14 @@
 
             <canvas id="gameCanvas" width="600" height="600"></canvas>
 
-            <div class="ai-indicator">
+            <div class="ai-indicator" id="aiIndicator">
                 <div class="ai-dot"></div>
                 <span><strong>AI Autopilot Active</strong> - Using A* Pathfinding Algorithm</span>
+            </div>
+
+            <div class="mode-toggle">
+                <button class="btn-mode active" id="aiModeBtn" onclick="setMode('ai')">🤖 AI Play</button>
+                <button class="btn-mode" id="manualModeBtn" onclick="setMode('manual')">👤 Manual Play</button>
             </div>
 
             <div class="controls">
@@ -238,6 +271,8 @@
             </div>
 
             <div class="status playing" id="status">Ready to start!</div>
+
+            <div class="manual-hint" id="manualHint" style="display: none;">Use Arrow Keys or WASD to control the snake</div>
 
             <div class="legend">
                 <div class="legend-item">
@@ -272,8 +307,28 @@
         let isPlaying = false;
         let isPaused = false;
         let gameSpeed = 100;
+        let isAiMode = true;
 
         document.getElementById('highScore').textContent = highScore;
+
+        function setMode(mode) {
+            if (isPlaying) return;
+            isAiMode = mode === 'ai';
+            document.getElementById('aiModeBtn').classList.toggle('active', isAiMode);
+            document.getElementById('manualModeBtn').classList.toggle('active', !isAiMode);
+            document.getElementById('aiIndicator').style.display = isAiMode ? 'flex' : 'none';
+            document.getElementById('manualHint').style.display = isAiMode ? 'none' : 'block';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!isPlaying || isPaused || isAiMode) return;
+            e.preventDefault();
+            const key = e.key.toLowerCase();
+            if (key === 'arrowup' || key === 'w') { if (dy === 0) { dx = 0; dy = -1; } }
+            else if (key === 'arrowdown' || key === 's') { if (dy === 0) { dx = 0; dy = 1; } }
+            else if (key === 'arrowleft' || key === 'a') { if (dx === 0) { dx = -1; dy = 0; } }
+            else if (key === 'arrowright' || key === 'd') { if (dx === 0) { dx = 1; dy = 0; } }
+        });
 
         function initGame() {
             snake = [
@@ -522,7 +577,14 @@
                 });
 
                 if (safeMoves.length > 0) {
-                    const move = safeMoves[0];
+                    // Prefer moving toward tail to stay alive longer (follow-tail strategy)
+                    const tail = snake[snake.length - 1];
+                    const tailDir = {
+                        dx: Math.sign(tail.x - head.x),
+                        dy: Math.sign(tail.y - head.y)
+                    };
+                    const towardTail = safeMoves.find(m => m.dx === tailDir.dx && m.dy === tailDir.dy);
+                    const move = towardTail || safeMoves[0];
                     dx = move.dx;
                     dy = move.dy;
                 }
@@ -532,7 +594,7 @@
         function update() {
             if (!isPlaying || isPaused) return;
             
-            aiMove();
+            if (isAiMode) aiMove();
             moveSnake();
             drawGame();
         }
