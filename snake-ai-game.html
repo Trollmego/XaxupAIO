@@ -479,7 +479,7 @@
                 // Check if position is valid
                 if (newPos.x >= 0 && newPos.x < tileCount && 
                     newPos.y >= 0 && newPos.y < tileCount &&
-                    !snake.slice(0, -2).some(segment => segment.x === newPos.x && segment.y === newPos.y)) {
+                    !snake.slice(0, -1).some(segment => segment.x === newPos.x && segment.y === newPos.y)) {
                     neighbors.push(newPos);
                 }
             }
